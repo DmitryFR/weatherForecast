@@ -58,6 +58,7 @@ class FiveDayWeatherForecastTableViewController: UITableViewController {
         if (cell == nil){
             cell = WeatherTableViewCell(style: UITableViewCellStyle.value1, reuseIdentifier: identifier)
         }
+        /// Это вообще ужас :) ты сам через неделю забудешь что здесь за данные и зачем они нужны. Очень тяжело читать, поддерживать, легко допустить ошибки. Вместо хранения словарей заводят классы для модельных объектов с простыми полями (day, imageURL, temp и т.д.), и в эти классы маппят данные из словарей
         let weather = self.forecast["weather"] as! NSArray
         let day = (weather[indexPath.row] as! [String: Any])["date"] as! String
         let image = (((((weather[indexPath.row] as! [String: Any])["hourly"] as! NSArray)[4] as! [String: Any])["weatherIconUrl"] as! NSArray)[0] as! [String:Any])["value"] as! String
@@ -72,6 +73,7 @@ class FiveDayWeatherForecastTableViewController: UITableViewController {
     override func prepare(for segue: UIStoryboardSegue, sender: Any?) {
         if segue.identifier == "selectedDay"{
             let indexPath = self.tableView.indexPathForSelectedRow as! (NSIndexPath)
+            /// Тоже очень непонятная и нечитабельная передача данных 
             if  let weather_vc = segue.destination as? HourlyWeatherViewController {
                 weather_vc.weather = ((self.forecast["weather"] as! NSArray)[indexPath.row] as! [String: Any])["hourly"] as! NSArray
                 weather_vc.date = ((self.forecast["weather"] as! NSArray)[indexPath.row] as! [String:Any])["date"] as! String
