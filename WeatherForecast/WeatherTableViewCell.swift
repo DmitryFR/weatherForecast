@@ -20,12 +20,14 @@ class WeatherTableViewCell: UITableViewCell {
         
         self.feelsLikeLabel.text = feelsLike
         self.temperatureLabel.text = temperature
+        /// Тут опять коммент про неявную зависимость, про название image и про force unwrap
         self.weekDayLabel.text = getWeekdayFromDate(day: day)
         let filePath = URL(string: image)!
         let session = URLSession(configuration: .default)
         let downloadPic = session.dataTask(with: filePath){(data, response, error) in
             if let res = response as? HTTPURLResponse{
                 print("code is \(res.statusCode)")
+                /// Нужно вернуться в главный поток
                 if let imageData = data{
                     self.weatherImage.image = UIImage(data: imageData)
                 }

@@ -9,6 +9,7 @@
 import UIKit
 import CoreData
 
+/// Название класса должно отражать его суть. Если он наследуется от view controller, то называться должен AddNewCityViewController
 class AddNewCity: UIViewController {
 
     @IBOutlet weak var countryInput: UITextField!
@@ -21,7 +22,8 @@ class AddNewCity: UIViewController {
         countryInput.text = ""
         cityInput.text = ""
     }
-
+    
+    /// Неправильное именование метода - нет camel case
     func hide_keyboard(){
         print("hide")
         self.view.endEditing(true)
@@ -39,10 +41,12 @@ class AddNewCity: UIViewController {
         self.view.addGestureRecognizer(tgz)
     }
 
-
+    /// Сохранение данных в хранилище - не задача view controller'a, этим должен заниматься отдельный объект. Ну и в случае ошибки стоит как-то её пользователю отобразить, или крэшнуть приложение, если ошибка серьезная
     @IBAction func saveBtnPressed(_ sender: Any) {
         let appDelegate = UIApplication.shared.delegate as! AppDelegate
         let context = appDelegate.persistentContainer.viewContext
+        
+        /// Force unwrap в целом считается плохой практикой, и его стоит избегать. Хотя в данном случае это не критично
         let entity = NSEntityDescription.entity(forEntityName: "City", in: context)!
         let city = NSManagedObject(entity: entity, insertInto: context)
         city.setValue(cityInput.text, forKey: "name")
